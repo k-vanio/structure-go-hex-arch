@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pb;
+
+import "internal/adapters/framework/left/grpc/proto/number_msg.proto";
+
+option go_package = "./pb";
+
+service ArithmeticService {
+    rpc GetAddition(Params) returns (Answer){}
+	rpc GetSubtraction(Params) returns (Answer){}
+	rpc GetMultiplication(Params) returns (Answer){}
+	rpc GetDivision(Params) returns (Answer){}
+}
