@@ -87,3 +87,60 @@ func TestGetAdditionSuccessfully(t *testing.T) {
 	dbStub.MethodCalled("AddHistory", int32(7), "Addition")
 	dbStub.AssertExpectations(t)
 }
+
+func TestGetSubtractionSuccessfully(t *testing.T) {
+	ctx := context.Background()
+	dbStub := new(DBStub)
+
+	client, closer := server(ctx, dbStub)
+	defer closer()
+
+	dbStub.On("AddHistory", int32(26), "Subtraction").Return(nil)
+
+	an, err := client.GetSubtraction(ctx, &pb.Params{A: 30, B: 4})
+	expected := &pb.Answer{Value: 26}
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected.GetValue(), an.GetValue())
+	dbStub.AssertNumberOfCalls(t, "AddHistory", 1)
+	dbStub.MethodCalled("AddHistory", int32(26), "Subtraction")
+	dbStub.AssertExpectations(t)
+}
+
+func TestGetMultiplicationSuccessfully(t *testing.T) {
+	ctx := context.Background()
+	dbStub := new(DBStub)
+
+	client, closer := server(ctx, dbStub)
+	defer closer()
+
+	dbStub.On("AddHistory", int32(120), "Multiplication").Return(nil)
+
+	an, err := client.GetMultiplication(ctx, &pb.Params{A: 30, B: 4})
+	expected := &pb.Answer{Value: 120}
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected.GetValue(), an.GetValue())
+	dbStub.AssertNumberOfCalls(t, "AddHistory", 1)
+	dbStub.MethodCalled("AddHistory", int32(120), "Multiplication")
+	dbStub.AssertExpectations(t)
+}
+
+func TestGetDivisionSuccessfully(t *testing.T) {
+	ctx := context.Background()
+	dbStub := new(DBStub)
+
+	client, closer := server(ctx, dbStub)
+	defer closer()
+
+	dbStub.On("AddHistory", int32(5), "Division").Return(nil)
+
+	an, err := client.GetDivision(ctx, &pb.Params{A: 20, B: 4})
+	expected := &pb.Answer{Value: 5}
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected.GetValue(), an.GetValue())
+	dbStub.AssertNumberOfCalls(t, "AddHistory", 1)
+	dbStub.MethodCalled("AddHistory", int32(5), "Division")
+	dbStub.AssertExpectations(t)
+}
